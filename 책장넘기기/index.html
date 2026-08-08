@@ -6,12 +6,12 @@
   <title>Wedding Story Book</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Noto+Serif+KR:wght@300;400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Noto+Serif+KR:wght@300;400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- 눈 내림 효과 -->
+  <!-- 눈 내림 -->
   <div class="snow">
     <span></span><span></span><span></span><span></span><span></span>
     <span></span><span></span><span></span><span></span><span></span>
@@ -19,54 +19,62 @@
     <span></span><span></span><span></span><span></span><span></span>
   </div>
 
-  <!-- 책 전체 감싸는 컨테이너 -->
-  <div class="book-container">
+  <!-- =============================================
+       메인 책 (StPageFlip)
+       ============================================= -->
+  <div class="book-scene visible" id="bookScene">
+    <div class="book-container">
 
-    <div class="book">
+      <!-- StPageFlip 이 관리하는 책 -->
+      <div id="book">
 
-      <!-- 책등 -->
-      <div class="spine"></div>
-
-      <!-- SPREAD 0: 표지 -->
-      <div class="spread active" data-index="0">
-
-        <div class="page left cover">
-          <div class="cover-inner">
-            <p class="cover-sub">Our Story</p>
-            <h1 class="cover-title">Wedding<br>Story Book</h1>
-            <p class="cover-date">2026</p>
-            <div class="cover-ornament">✦ ✦ ✦</div>
-          </div>
-        </div>
-
-        <div class="page right cover-right">
-          <div class="cover-inner">
-            <h2 class="cover-names">DANO &amp; LOVE</h2>
-            <p class="cover-desc">우리의 가장 아름다운<br>순간들</p>
-            <p class="cover-sub">펼쳐보세요 →</p>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- SPREAD 1: CHAPTER 01 -->
-      <div class="spread" data-index="1">
-
-        <div class="page left">
+        <!-- ★ Page 1: 앞표지 (hard) — showCover:true 이면 단면으로 표시됨 -->
+        <div class="page page-cover" data-density="hard">
           <div class="page-inner">
+            <p class="cv-label">Our Story</p>
+            <h1 class="cv-title-inner">Wedding<br>Story Book</h1>
+            <div class="cv-line"></div>
+            <p class="cv-names-inner">진현 &amp; 윤담</p>
+            <p class="cv-date-inner">2027 · 10 · 09</p>
+          </div>
+        </div>
+
+        <!-- ★ Page 2: 속표지 왼쪽 (hard) -->
+        <div class="page page-cover-inside" data-density="hard">
+          <div class="page-inner page-inner-left">
+            <div class="ornament-large">✦</div>
+            <p class="inside-label">Wedding Story Book</p>
+          </div>
+        </div>
+
+        <!-- ★ Page 3: 속표지 오른쪽 -->
+        <div class="page">
+          <div class="page-inner page-inner-right">
+            <p class="chapter-label">Our Story</p>
+            <h1 class="open-title">두 사람의<br>이야기</h1>
+            <p class="handwriting">우리답게,<br>오래 함께하겠습니다.</p>
+            <p class="cover-date-open">2027 · 10 · 09</p>
+          </div>
+        </div>
+
+        <!-- ★ Page 4: Chapter 01 왼쪽 -->
+        <div class="page">
+          <div class="page-inner page-inner-left">
             <p class="chapter-label">Chapter 01</p>
-            <h2>운명은<br>로그인에서<br>시작되었습니다</h2>
+            <h2>처음은<br>우연이었습니다.</h2>
             <p class="handwriting">
-              어느 평범한 날,<br><br>
-              우리는 같은 공간이 아닌<br>
-              작은 화면 속에서<br>
-              만났습니다.
+              어느 평범한 날,<br>
+              같은 화면 안에서 만난 우리.<br><br>
+              처음에는 그저 이야기를 나눴고<br>
+              조금씩 서로의 하루가<br>
+              궁금해졌습니다.
             </p>
           </div>
         </div>
 
-        <div class="page right">
-          <div class="page-inner">
+        <!-- ★ Page 5: Chapter 01 오른쪽 -->
+        <div class="page">
+          <div class="page-inner page-inner-right">
             <div class="photo-frame">
               <img src="images/chapter1.jpg" alt="첫 만남">
             </div>
@@ -77,21 +85,18 @@
           </div>
         </div>
 
-      </div>
-
-      <!-- SPREAD 2: CHAPTER 02 -->
-      <div class="spread" data-index="2">
-
-        <div class="page left">
-          <div class="page-inner">
+        <!-- ★ Page 6: Chapter 02 왼쪽 -->
+        <div class="page">
+          <div class="page-inner page-inner-left">
             <div class="photo-frame">
               <img src="images/chapter2.jpg" alt="영상통화">
             </div>
           </div>
         </div>
 
-        <div class="page right">
-          <div class="page-inner">
+        <!-- ★ Page 7: Chapter 02 오른쪽 -->
+        <div class="page">
+          <div class="page-inner page-inner-right">
             <p class="chapter-label">Chapter 02</p>
             <h2>조금씩<br>가까워진 우리</h2>
             <p class="handwriting">
@@ -103,25 +108,22 @@
           </div>
         </div>
 
-      </div>
-
-      <!-- SPREAD 3: 첫 번째 만남 -->
-      <div class="spread" data-index="3">
-
-        <div class="page left">
-          <div class="page-inner">
+        <!-- ★ Page 8: Chapter 03 왼쪽 -->
+        <div class="page">
+          <div class="page-inner page-inner-left">
             <p class="chapter-label">Chapter 03</p>
             <h2>첫 번째 만남</h2>
             <div class="ticket">
               <p class="ticket-label">FIRST MEETING</p>
               <p class="ticket-date">2024. 12. 21</p>
-              <p class="ticket-place">MYEONGDONG CGV</p>
+              <p class="ticket-place">명동 CGV</p>
             </div>
           </div>
         </div>
 
-        <div class="page right">
-          <div class="page-inner">
+        <!-- ★ Page 9: Chapter 03 오른쪽 -->
+        <div class="page">
+          <div class="page-inner page-inner-right">
             <p class="handwriting">
               드디어 화면 밖에서<br>
               서로를 마주한 날.<br><br>
@@ -132,115 +134,113 @@
           </div>
         </div>
 
-      </div>
-
-      <!-- SPREAD 4: CHAPTER 04 -->
-      <div class="spread" data-index="4">
-
-        <div class="page left">
-          <div class="page-inner">
+        <!-- ★ Page 10: Chapter 04 왼쪽 -->
+        <div class="page">
+          <div class="page-inner page-inner-left">
             <p class="chapter-label">Chapter 04</p>
-            <h2>함께 만들어간<br>시간</h2>
+            <h2>지나온 날들이<br>우리를 닮아갑니다.</h2>
             <p class="handwriting">
-              처음의 설렘은<br>
-              시간이 지나며<br>
-              믿음이 되었습니다.<br><br>
-              웃었던 순간,<br>
-              힘들었던 순간,<br>
-              모든 시간이<br>
-              우리의 이야기가 되었습니다.
+              좋은 날에는 같이 웃었고<br>
+              좋지 않은 날에는<br>
+              서로에게 투덜거렸습니다.<br><br>
+              가끔은 삐치고<br>
+              또 금방 풀렸습니다.
             </p>
           </div>
         </div>
 
-        <div class="page right">
-          <div class="page-inner">
+        <!-- ★ Page 11: Chapter 04 오른쪽 -->
+        <div class="page">
+          <div class="page-inner page-inner-right">
             <div class="photo-frame">
               <img src="images/chapter4.jpg" alt="함께한 시간">
             </div>
           </div>
         </div>
 
-      </div>
-
-      <!-- SPREAD 5: CHAPTER 05 -->
-      <div class="spread" data-index="5">
-
-        <div class="page left">
-          <div class="page-inner">
+        <!-- ★ Page 12: Chapter 05 왼쪽 -->
+        <div class="page">
+          <div class="page-inner page-inner-left">
             <div class="photo-frame">
               <img src="images/chapter5.jpg" alt="프로포즈">
             </div>
           </div>
         </div>
 
-        <div class="page right">
-          <div class="page-inner">
+        <!-- ★ Page 13: Chapter 05 오른쪽 -->
+        <div class="page">
+          <div class="page-inner page-inner-right">
             <p class="chapter-label">Chapter 05</p>
-            <h2>사랑이라는<br>약속</h2>
+            <h2>한 번의 고백,<br>세 번의 대답</h2>
             <p class="handwriting">
-              2025년 12월 25일,<br>
-              당신이 먼저 말했습니다.<br><br>
-              그리고 2026년 3월,<br>
-              나는 한 달 동안<br>
-              당신에게 물었습니다.<br><br>
-              집에서, 노래방에서,<br>
-              차 안에서.<br><br>
-              꽃과 함께.
+              2024년 12월 25일,<br>
+              내가 먼저 말했습니다.<br><br>
+              2026년 3월,<br>
+              당신이 다시 말을 꺼냈습니다.<br>
+              한 달 동안 세 번이나.<br><br>
+              집, 노래방, 그리고 차 안.<br>
+              세 번 모두 웃음이 났습니다.
             </p>
           </div>
         </div>
 
-      </div>
-
-      <!-- SPREAD 6: FINAL -->
-      <div class="spread" data-index="6">
-
-        <div class="page left final">
-          <div class="page-inner">
+        <!-- ★ Page 14: Chapter 06 왼쪽 -->
+        <div class="page">
+          <div class="page-inner page-inner-left">
             <p class="chapter-label">Chapter 06</p>
             <h2>그리고 우리는</h2>
             <p class="handwriting">
-              서로의 하루가 되어<br>
-              평생을 함께하기로<br>
-              약속했습니다.
+              오늘도 좋고<br>
+              내일은 더 좋을 것 같아서<br>
+              같이 살기로 했습니다.
             </p>
-            <p class="final-text">Our Forever Story Begins</p>
+            <p class="final-text">다음도 우리답게.</p>
           </div>
         </div>
 
-        <div class="page right final">
-          <div class="page-inner final-right">
+        <!-- ★ Page 15: 마지막 오른쪽 (청첩장) -->
+        <div class="page">
+          <div class="page-inner page-inner-right final-right-inner">
             <div class="rings">💍</div>
-            <h2 class="invite-title">함께해 주세요</h2>
-            <p class="handwriting small">두 사람의 새로운 이야기가<br>시작됩니다.</p>
+            <h3 class="invite-title">저희의 결혼식에<br>초대합니다</h3>
+            <p class="handwriting small">
+              2027. 10. 09 (토) 12시<br>
+              롯데월드민속박물관<br>전통혼례장
+            </p>
             <a class="invite-btn" href="https://ddodang.com" target="_blank">
               💌 청첩장 보기
             </a>
           </div>
         </div>
 
+        <!-- ★ Page 16: 뒷표지 (hard) -->
+        <div class="page page-cover-back" data-density="hard">
+          <div class="page-inner">
+            <p class="back-cover-text">Our Forever Story Begins</p>
+          </div>
+        </div>
+
+      </div><!-- /#book -->
+
+      <!-- 컨트롤 -->
+      <div class="controls">
+        <button id="prevBtn">← 이전</button>
+        <button id="playBtn">▶ 자동재생</button>
+        <button id="nextBtn">다음 →</button>
       </div>
 
-    </div><!-- /book -->
+      <!-- 인디케이터 -->
+      <div class="page-indicator">
+        <span id="currentPage">1</span> / <span id="totalPages">8</span>
+      </div>
 
-    <!-- 컨트롤 버튼 -->
-    <div class="controls">
-      <button class="prev-btn" id="prevBtn">← 이전</button>
-      <button class="play-btn" id="playBtn">▶ 자동재생</button>
-      <button class="next-btn" id="nextBtn">다음 →</button>
     </div>
+  </div>
 
-    <!-- 페이지 인디케이터 -->
-    <div class="page-indicator">
-      <span id="currentPage">1</span> / <span id="totalPages">7</span>
-    </div>
-
-  </div><!-- /book-container -->
-
-  <!-- 배경 음악 -->
   <audio id="bgm" loop src="music/wedding.mp3"></audio>
 
+  <!-- StPageFlip 라이브러리 -->
+  <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
