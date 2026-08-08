@@ -1,0 +1,340 @@
+/* ==================== RESET & BASE ==================== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #B3C3B7; /* [수정] 배경: 옥색 */
+  font-family: 'Noto Serif KR', serif;
+  color: #2B2725; /* 기본 텍스트: 먹색 */
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* ==================== SNOW ==================== */
+.snow {
+  position: fixed; top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none; z-index: 9999;
+}
+.snow span {
+  position: absolute; top: -10px;
+  width: 4px; height: 4px;
+  background: rgba(248,246,241,0.85); /* [수정] 어두운 배경용 밝은 눈 입자 */
+  border-radius: 50%;
+  animation: snowfall linear infinite;
+}
+.snow span:nth-child(1)  { left:5%;  animation-duration:12s; animation-delay:0s;  }
+.snow span:nth-child(2)  { left:12%; animation-duration:15s; animation-delay:2s;  }
+.snow span:nth-child(3)  { left:20%; animation-duration:11s; animation-delay:4s;  }
+.snow span:nth-child(4)  { left:28%; animation-duration:14s; animation-delay:1s;  }
+.snow span:nth-child(5)  { left:36%; animation-duration:13s; animation-delay:3s;  }
+.snow span:nth-child(6)  { left:44%; animation-duration:10s; animation-delay:5s;  }
+.snow span:nth-child(7)  { left:52%; animation-duration:16s; animation-delay:2s;  }
+.snow span:nth-child(8)  { left:60%; animation-duration:12s; animation-delay:4s;  }
+.snow span:nth-child(9)  { left:68%; animation-duration:14s; animation-delay:1s;  }
+.snow span:nth-child(10) { left:76%; animation-duration:11s; animation-delay:3s;  }
+.snow span:nth-child(11) { left:84%; animation-duration:15s; animation-delay:0s;  }
+.snow span:nth-child(12) { left:92%; animation-duration:13s; animation-delay:2s;  }
+.snow span:nth-child(13) { left:8%;  animation-duration:10s; animation-delay:4s;  }
+.snow span:nth-child(14) { left:16%; animation-duration:16s; animation-delay:1s;  }
+.snow span:nth-child(15) { left:24%; animation-duration:12s; animation-delay:3s;  }
+.snow span:nth-child(16) { left:32%; animation-duration:14s; animation-delay:5s;  }
+.snow span:nth-child(17) { left:48%; animation-duration:11s; animation-delay:2s;  }
+.snow span:nth-child(18) { left:64%; animation-duration:15s; animation-delay:0s;  }
+.snow span:nth-child(19) { left:80%; animation-duration:13s; animation-delay:3s;  }
+.snow span:nth-child(20) { left:96%; animation-duration:10s; animation-delay:1s;  }
+
+@keyframes snowfall {
+  0%   { transform: translateY(0) translateX(0);    opacity: 1;   }
+  100% { transform: translateY(100vh) translateX(40px); opacity: 0.2; }
+}
+
+/* ==================== BOOK SCENE ==================== */
+.book-scene {
+  position: fixed; inset: 0;
+  display: flex; justify-content: center; align-items: center;
+}
+.book-scene.visible { opacity: 1; visibility: visible; }
+
+.book-container {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 28px;
+  width: 100%; padding: 20px;
+  perspective: 1800px;
+  perspective-origin: center center;
+}
+
+/* StPageFlip 그림자 */
+.stf__parent {
+  filter: drop-shadow(0 30px 60px rgba(43,39,37,0.55)) !important; /* [수정] 그림자 농도 복구 */
+  transition: filter 0.8s ease !important;
+}
+
+/* 표지 상태: 3D 입체감 */
+.book-container.cover-state .stf__parent {
+  transform: translateX(-25%) rotateY(8deg) rotateX(2deg) !important;
+  transition: none !important;
+  filter:
+    drop-shadow(-8px 6px 0px rgba(43,39,37,0.35))
+    drop-shadow(-14px 10px 0px rgba(43,39,37,0.22))
+    drop-shadow(-20px 14px 0px rgba(43,39,37,0.12))
+    drop-shadow(0 40px 60px rgba(43,39,37,0.6)) !important;
+}
+
+/* 뒷표지 상태 */
+.book-container.back-cover-state .stf__parent {
+  transform: translateX(25%) rotateY(-8deg) rotateX(2deg) !important;
+  transition: none !important;
+  filter:
+    drop-shadow(8px 6px 0px rgba(43,39,37,0.35))
+    drop-shadow(14px 10px 0px rgba(43,39,37,0.22))
+    drop-shadow(20px 14px 0px rgba(43,39,37,0.12))
+    drop-shadow(0 40px 60px rgba(43,39,37,0.6)) !important;
+}
+
+/* 펼쳐진 상태 */
+.book-container.cover-state-ready:not(.cover-state):not(.back-cover-state) .stf__parent {
+  transform: translateX(0%) rotateY(0deg) rotateX(0deg) !important;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.book-container.cover-state-ready.cover-state .stf__parent {
+  transform: translateX(-25%) rotateY(8deg) rotateX(2deg) !important;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  filter:
+    drop-shadow(-8px 6px 0px rgba(43,39,37,0.35))
+    drop-shadow(-14px 10px 0px rgba(43,39,37,0.22))
+    drop-shadow(-20px 14px 0px rgba(43,39,37,0.12))
+    drop-shadow(0 40px 60px rgba(43,39,37,0.6)) !important;
+}
+.book-container.cover-state-ready.back-cover-state .stf__parent {
+  transform: translateX(25%) !important;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* ==================== StPageFlip 페이지 공통 ==================== */
+.page {
+  background-color: #F8F2E6; /* 속지(내지) 종이 색상: 아이보리 */
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* 종이 질감 */
+.page::after {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: repeating-linear-gradient(
+    0deg, transparent, transparent 32px,
+    rgba(114,34,39,0.022) 32px, rgba(114,34,39,0.022) 33px
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── 앞표지 ── */
+.page-cover {
+  background: #F8F6F1 !important; /* [수정] 표지 바탕: 백자색 */
+  color: #2B2725;
+}
+.page-cover::after { display: none; }
+.page-cover::before {
+  content: ''; position: absolute; inset: 16px;
+  border: 1px solid rgba(114,34,39,0.2); /* [수정] 딥와인 톤의 테두리 선 */
+  border-radius: 2px; pointer-events: none; z-index: 1;
+}
+
+/* ── 속표지 ── */
+.page-cover-inside {
+  background: #F8F6F1 !important; /* [수정] 표지 안쪽: 백자색 */
+  color: #2B2725;
+}
+.page-cover-inside::after { display: none; }
+
+/* ── 뒷표지 ── */
+.page-cover-back {
+  background: #F8F6F1 !important; /* [수정] 뒷표지: 백자색 */
+  color: #2B2725;
+}
+.page-cover-back::after { display: none; }
+
+/* ── 왼쪽 페이지 ── */
+.page-inner-left {
+  border-right: 1px solid rgba(114,34,39,0.08);
+  box-shadow: inset -8px 0 16px rgba(43,39,37,0.06);
+}
+
+/* ── 오른쪽 페이지 ── */
+.page-inner-right {
+  border-left: 1px solid rgba(114,34,39,0.08);
+  box-shadow: inset 8px 0 16px rgba(43,39,37,0.06);
+}
+
+/* ==================== PAGE INNER 공통 ==================== */
+.page-inner {
+  width: 100%; height: 100%;
+  padding: 48px 40px;
+  display: flex; flex-direction: column; justify-content: center;
+  position: relative; z-index: 1;
+  box-sizing: border-box;
+}
+
+.page-cover .page-inner,
+.page-cover-inside .page-inner,
+.page-cover-back .page-inner {
+  align-items: center; text-align: center;
+  justify-content: center;
+}
+
+/* ==================== 표지 내부 텍스트 ==================== */
+.cv-title-inner {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(36px, 7vw, 56px);
+  font-weight: 600; line-height: 1.15;
+  color: #2B2725; /* [수정] 백자색 표지 위 먹색 제목 */
+  text-shadow: none;
+  margin: 16px 0;
+}
+.cv-names-inner {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(18px, 3.5vw, 26px);
+  font-style: italic; color: #722227; /* [수정] 서브 포인트: 딥 와인 */
+  margin: 10px 0;
+}
+.cv-date-inner {
+  font-size: 13px; letter-spacing: 3px;
+  color: #2B2725; opacity: 0.7; margin-top: 8px; /* [수정] 날짜: 먹색 */
+}
+.ornament-large {
+  font-size: 48px; opacity: 0.5; color: #722227; /* [수정] 문양: 딥 와인 */
+  margin-bottom: 20px;
+}
+.inside-label {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 14px; letter-spacing: 5px; text-transform: uppercase;
+  color: rgba(43,39,37,0.6); /* [수정] 라벨: 먹색 톤 */
+}
+.back-cover-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(16px, 2.5vw, 22px); font-style: italic;
+  color: rgba(43,39,37,0.65); letter-spacing: 2px; /* [수정] 뒷표지 문구: 먹색 톤 */
+}
+
+/* ==================== 본문 텍스트 ==================== */
+.chapter-label {
+  font-size: 11px; letter-spacing: 5px; text-transform: uppercase;
+  color: #722227; margin-bottom: 18px; /* 서브 포인트: 딥 와인 */
+  font-family: 'Cormorant Garamond', serif;
+}
+h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(24px, 4vw, 40px); font-weight: 600;
+  line-height: 1.25; color: #2B2725; margin-bottom: 24px; /* 본문 제목: 먹색 */
+}
+h1.open-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(30px, 5.5vw, 52px); font-weight: 600;
+  line-height: 1.15; margin-bottom: 18px; color: #2B2725; /* 메인 제목: 먹색 */
+}
+.ornament {
+  font-size: 18px; letter-spacing: 12px; margin: 14px 0; opacity: 0.6;
+  color: #722227; /* 문양 포인트: 딥 와인 */
+}
+.handwriting {
+  font-size: clamp(13px, 2vw, 18px); line-height: 2.1;
+  color: #2B2725; font-weight: 300; /* 본문 내용: 먹색 */
+}
+.handwriting.small { font-size: clamp(11px, 1.6vw, 15px); margin-top: 14px; opacity: 0.82; }
+.cover-date-open { font-size: 13px; letter-spacing: 4px; margin-top: 20px; color: #722227; opacity: 0.85; }
+.final-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(15px, 2.2vw, 22px); font-style: italic;
+  color: #722227; margin-top: 28px; letter-spacing: 2px;
+}
+
+/* ==================== 사진 프레임 ==================== */
+.photo-frame {
+  width: 100%; max-width: 600px; margin: 0 auto;
+  padding: 10px 10px 32px; background: #F8F2E6;
+  box-shadow: 0 6px 20px rgba(43,39,37,0.12), 0 2px 6px rgba(43,39,37,0.06);
+  transform: rotate(-1.5deg); transition: transform 0.3s ease;
+}
+.photo-frame:hover { transform: rotate(0deg) scale(1.04); }
+.photo-frame img {
+  width: 100%; height: auto; display: block;
+  filter: sepia(0.1) contrast(1.05);
+  max-height: 400px; object-fit: cover;
+}
+
+/* ==================== 티켓 ==================== */
+.ticket {
+  border: 1.5px solid #722227; padding: 26px;
+  margin: 20px 0; text-align: center;
+  background: rgba(114,34,39,0.04); border-radius: 6px; position: relative;
+}
+.ticket::before, .ticket::after {
+  content: ''; position: absolute; top: 50%;
+  width: 13px; height: 13px; border-radius: 50%;
+  background: #F8F2E6; border: 1.5px solid #722227; transform: translateY(-50%);
+}
+.ticket::before { left: -7px; } .ticket::after { right: -7px; }
+.ticket-label { font-size: 10px; letter-spacing: 6px; text-transform: uppercase; color: #722227; margin-bottom: 12px; }
+.ticket-date  { font-size: clamp(18px, 3vw, 28px); font-family: 'Cormorant Garamond', serif; margin: 8px 0; color: #2B2725; }
+.ticket-place { font-size: 13px; letter-spacing: 2px; color: #2B2725; margin-top: 8px; }
+
+/* ==================== 마지막 페이지 ==================== */
+.final-right-inner {
+  align-items: center; text-align: center; justify-content: center;
+}
+.rings { font-size: 48px; margin-bottom: 16px; animation: ringPulse 2.5s ease-in-out infinite; }
+@keyframes ringPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.12); } }
+.invite-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(18px, 3vw, 28px); font-weight: 600;
+  color: #2B2725; line-height: 1.4; margin-bottom: 14px;
+}
+.invite-btn {
+  display: inline-block; margin-top: 24px; padding: 13px 32px;
+  background: #722227; /* 핵심 메인 버튼: 딥 와인 */
+  color: #F8F6F1; text-decoration: none; border-radius: 24px;
+  font-size: clamp(12px, 1.6vw, 16px); letter-spacing: 2px;
+  box-shadow: 0 8px 24px rgba(114,34,39,0.25);
+  transition: all 0.3s ease; font-family: 'Noto Serif KR', serif;
+}
+.invite-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(114,34,39,0.35); }
+
+/* ==================== CONTROLS ==================== */
+.controls { display: flex; gap: 14px; justify-content: center; }
+.controls button {
+  padding: 12px 28px; border: none; border-radius: 24px;
+  background: #722227; color: #F8F6F1; /* [수정] 옥색 배경 위 눈에 띄게 딥 와인으로 변경 */
+  font-size: clamp(13px, 1.4vw, 16px); font-family: 'Noto Serif KR', serif;
+  cursor: pointer; transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(43,39,37,0.25); backdrop-filter: blur(4px);
+}
+.controls button:hover    { background: #5a1b1f; transform: translateY(-2px); box-shadow: 0 6px 18px rgba(43,39,37,0.3); }
+.controls button:active   { transform: translateY(0); }
+.controls button:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+/* ==================== PAGE INDICATOR ==================== */
+.page-indicator {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px; letter-spacing: 3px;
+  color: rgba(248,246,241,0.65); /* [수정] 어두운 옥색 배경용 밝은 텍스트 */
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 900px) {
+  .page-inner { padding: 34px 28px; }
+  h2 { font-size: 22px; }
+}
+@media (max-width: 600px) {
+  .page-inner { padding: 22px 18px; }
+  h2 { font-size: 18px; }
+  .photo-frame { max-width: 200px; }
+  .controls button { padding: 10px 16px; font-size: 13px; }
+  .cover-book { width: 240px; height: 330px; }
+  .cv-title  { font-size: 34px; }
+  .fan-wrap  { width: 240px; height: 330px; }
+}
