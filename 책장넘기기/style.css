@@ -1,0 +1,548 @@
+/* ==================== RESET & BASE ==================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: linear-gradient(135deg, #2d1810 0%, #4a2c1f 50%, #2d1810 100%);
+  color: #3b2a20;
+  font-family: 'Noto Serif KR', serif;
+  overflow-x: hidden;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+/* ==================== SNOW EFFECT ==================== */
+.snow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.snow span {
+  position: absolute;
+  top: -10px;
+  width: 3px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  animation: snowfall linear infinite;
+}
+
+.snow span:nth-child(1) { left: 10%; animation-duration: 12s; animation-delay: 0s; }
+.snow span:nth-child(2) { left: 20%; animation-duration: 14s; animation-delay: 2s; }
+.snow span:nth-child(3) { left: 30%; animation-duration: 10s; animation-delay: 4s; }
+.snow span:nth-child(4) { left: 40%; animation-duration: 16s; animation-delay: 1s; }
+.snow span:nth-child(5) { left: 50%; animation-duration: 13s; animation-delay: 3s; }
+.snow span:nth-child(6) { left: 60%; animation-duration: 11s; animation-delay: 5s; }
+.snow span:nth-child(7) { left: 70%; animation-duration: 15s; animation-delay: 2s; }
+.snow span:nth-child(8) { left: 80%; animation-duration: 12s; animation-delay: 4s; }
+.snow span:nth-child(9) { left: 90%; animation-duration: 14s; animation-delay: 1s; }
+.snow span:nth-child(10) { left: 15%; animation-duration: 13s; animation-delay: 3s; }
+.snow span:nth-child(11) { left: 25%; animation-duration: 11s; animation-delay: 0s; }
+.snow span:nth-child(12) { left: 35%; animation-duration: 15s; animation-delay: 2s; }
+.snow span:nth-child(13) { left: 45%; animation-duration: 12s; animation-delay: 4s; }
+.snow span:nth-child(14) { left: 55%; animation-duration: 14s; animation-delay: 1s; }
+.snow span:nth-child(15) { left: 65%; animation-duration: 13s; animation-delay: 3s; }
+.snow span:nth-child(16) { left: 75%; animation-duration: 10s; animation-delay: 5s; }
+.snow span:nth-child(17) { left: 85%; animation-duration: 16s; animation-delay: 2s; }
+.snow span:nth-child(18) { left: 95%; animation-duration: 11s; animation-delay: 0s; }
+.snow span:nth-child(19) { left: 5%; animation-duration: 15s; animation-delay: 3s; }
+.snow span:nth-child(20) { left: 50%; animation-duration: 12s; animation-delay: 1s; }
+
+@keyframes snowfall {
+  0% {
+    transform: translateY(0) translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) translateX(50px);
+    opacity: 0.3;
+  }
+}
+
+/* ==================== BOOK CONTAINER ==================== */
+.book-container {
+  position: relative;
+  perspective: 2000px;
+  width: 100%;
+  max-width: 1400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+
+/* ==================== BOOK ==================== */
+.book {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  height: 700px;
+  transform-style: preserve-3d;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  background: #f8f2e8;
+}
+
+/* ==================== SPINE (책등) ==================== */
+.spine {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 40px;
+  height: 100%;
+  background: linear-gradient(to right, 
+    rgba(0, 0, 0, 0.15) 0%, 
+    rgba(0, 0, 0, 0.05) 50%, 
+    rgba(0, 0, 0, 0.15) 100%);
+  transform: translateX(-50%);
+  z-index: 10;
+  border-radius: 10px;
+  box-shadow: 
+    inset 2px 0 5px rgba(0, 0, 0, 0.2),
+    inset -2px 0 5px rgba(0, 0, 0, 0.2);
+}
+
+/* ==================== SPREAD (좌우 페이지 묶음) ==================== */
+.spread {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+.spread.active {
+  opacity: 1;
+  visibility: visible;
+  z-index: 5;
+}
+
+/* ==================== PAGE (개별 페이지) ==================== */
+.page {
+  width: 50%;
+  height: 100%;
+  background: #f8f2e8;
+  padding: 60px 50px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-shadow: inset 0 0 30px rgba(59, 42, 32, 0.05);
+}
+
+.page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(59, 42, 32, 0.02) 2px,
+      rgba(59, 42, 32, 0.02) 4px
+    );
+  pointer-events: none;
+}
+
+.page.left {
+  border-right: 1px solid rgba(59, 42, 32, 0.1);
+  border-radius: 10px 0 0 10px;
+}
+
+.page.right {
+  border-left: 1px solid rgba(59, 42, 32, 0.1);
+  border-radius: 0 10px 10px 0;
+}
+
+.page-inner {
+  position: relative;
+  z-index: 2;
+  animation: pageAppear 0.8s ease forwards;
+}
+
+@keyframes pageAppear {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==================== 표지 스타일 ==================== */
+.cover {
+  background: linear-gradient(135deg, #d4af37 0%, #c99a2e 100%);
+  color: #fff;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
+.cover-right {
+  background: linear-gradient(135deg, #c99a2e 0%, #b8892b 100%);
+  color: #fff;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
+.cover-inner {
+  text-align: center;
+}
+
+.cover-sub {
+  font-size: 14px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  opacity: 0.9;
+}
+
+.cover-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 72px;
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 30px 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.cover-names {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 56px;
+  font-weight: 600;
+  margin: 40px 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.cover-date {
+  font-size: 32px;
+  margin: 20px 0;
+  font-weight: 300;
+}
+
+.cover-desc {
+  font-size: 18px;
+  line-height: 1.8;
+  margin: 30px 0;
+  opacity: 0.9;
+}
+
+.cover-ornament {
+  font-size: 24px;
+  margin-top: 30px;
+  letter-spacing: 15px;
+  opacity: 0.7;
+}
+
+/* ==================== 챕터 레이블 ==================== */
+.chapter-label {
+  font-size: 12px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: #9b7653;
+  margin-bottom: 20px;
+  font-family: 'Cormorant Garamond', serif;
+}
+
+/* ==================== 제목 ==================== */
+h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 48px;
+  line-height: 1.3;
+  margin-bottom: 30px;
+  color: #3b2a20;
+  font-weight: 600;
+}
+
+/* ==================== 손글씨 스타일 ==================== */
+.handwriting {
+  font-size: 20px;
+  line-height: 2;
+  color: #5c4a3a;
+  font-weight: 300;
+  margin-top: 30px;
+}
+
+.handwriting.small {
+  font-size: 16px;
+  margin-top: 20px;
+  opacity: 0.8;
+}
+
+/* ==================== 사진 프레임 ==================== */
+.photo-frame {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 15px;
+  background: #fff;
+  box-shadow: 
+    0 4px 15px rgba(0, 0, 0, 0.15),
+    0 1px 3px rgba(0, 0, 0, 0.1);
+  transform: rotate(-2deg);
+  transition: transform 0.3s ease;
+}
+
+.photo-frame:hover {
+  transform: rotate(0deg) scale(1.05);
+}
+
+.photo-frame img {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: sepia(0.15);
+}
+
+/* ==================== 티켓 스타일 ==================== */
+.ticket {
+  border: 2px solid #d4af37;
+  padding: 40px;
+  margin: 30px 0;
+  text-align: center;
+  background: rgba(212, 175, 55, 0.05);
+  border-radius: 10px;
+}
+
+.ticket-label {
+  font-size: 12px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: #d4af37;
+  margin-bottom: 15px;
+}
+
+.ticket-date {
+  font-size: 32px;
+  font-weight: 400;
+  margin: 15px 0;
+  color: #3b2a20;
+}
+
+.ticket-place {
+  font-size: 18px;
+  letter-spacing: 2px;
+  color: #5c4a3a;
+  margin-top: 10px;
+}
+
+/* ==================== 마지막 페이지 ==================== */
+.final .page-inner {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.final-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-style: italic;
+  margin-top: 40px;
+  color: #d4af37;
+  letter-spacing: 2px;
+}
+
+.final-right {
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(212, 175, 55, 0.05) 100%);
+  padding: 60px;
+  border-radius: 10px;
+}
+
+.rings {
+  font-size: 64px;
+  margin-bottom: 30px;
+  animation: ringPulse 2s ease-in-out infinite;
+}
+
+@keyframes ringPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.invite-title {
+  font-size: 42px;
+  margin-bottom: 20px;
+}
+
+/* ==================== 청첩장 버튼 ==================== */
+.invite-btn {
+  display: inline-block;
+  margin-top: 40px;
+  padding: 18px 45px;
+  background: linear-gradient(135deg, #d4af37 0%, #c99a2e 100%);
+  color: #fff;
+  text-decoration: none;
+  border-radius: 30px;
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: 2px;
+  box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3);
+  transition: all 0.3s ease;
+}
+
+.invite-btn:hover {
+  background: linear-gradient(135deg, #c99a2e 0%, #b8892b 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(212, 175, 55, 0.4);
+}
+
+/* ==================== 컨트롤 버튼 ==================== */
+.controls {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.controls button {
+  padding: 12px 30px;
+  border: none;
+  border-radius: 25px;
+  background: rgba(212, 175, 55, 0.9);
+  color: #fff;
+  font-size: 16px;
+  font-family: 'Noto Serif KR', serif;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.controls button:hover {
+  background: #d4af37;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.controls button:active {
+  transform: translateY(0);
+}
+
+.controls button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ==================== 페이지 인디케이터 ==================== */
+.page-indicator {
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: 'Cormorant Garamond', serif;
+  letter-spacing: 2px;
+}
+
+/* ==================== 반응형 ==================== */
+@media (max-width: 1024px) {
+  .book {
+    height: 600px;
+  }
+  
+  .page {
+    padding: 40px 30px;
+  }
+  
+  h2 {
+    font-size: 36px;
+  }
+  
+  .cover-title {
+    font-size: 56px;
+  }
+  
+  .cover-names {
+    font-size: 42px;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    padding: 20px 10px;
+  }
+  
+  .book {
+    height: 500px;
+  }
+  
+  .page {
+    padding: 30px 20px;
+  }
+  
+  h2 {
+    font-size: 28px;
+  }
+  
+  .cover-title {
+    font-size: 42px;
+  }
+  
+  .cover-names {
+    font-size: 32px;
+  }
+  
+  .handwriting {
+    font-size: 16px;
+  }
+  
+  .controls button {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+  
+  .photo-frame {
+    max-width: 280px;
+  }
+}
+
+@media (max-width: 480px) {
+  .book {
+    height: 450px;
+  }
+  
+  .page {
+    padding: 20px 15px;
+  }
+  
+  h2 {
+    font-size: 24px;
+  }
+  
+  .cover-title {
+    font-size: 36px;
+  }
+  
+  .handwriting {
+    font-size: 14px;
+    line-height: 1.8;
+  }
+  
+  .spine {
+    width: 20px;
+  }
+}
